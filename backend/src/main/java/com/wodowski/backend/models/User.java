@@ -2,10 +2,7 @@ package com.wodowski.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,11 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Document(collection = "users")
+@Data
 public class User implements UserDetails {
     @Id private String id;
     private String username;

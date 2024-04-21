@@ -31,11 +31,10 @@ public class AuthService {
         this.authManager = authManager;
     }
 
-    public AuthResponse register(RegisterRequest request){
-        // optimize
-//        if(repository.existsByUsername(request.username()) || repository.existsByEmail(request.email())){
-//            throw new UserExistsException("User already exists!");
-//        }
+    public AuthResponse register(RegisterRequest request) throws UserExistsException {
+        if(repository.existsByUsernameOrEmail(request.username(), request.email())){
+            throw new UserExistsException("User with this email or username already exists!");
+        }
 
         User user = new User(
                 request.username(),

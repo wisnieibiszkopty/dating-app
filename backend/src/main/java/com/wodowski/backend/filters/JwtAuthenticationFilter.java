@@ -33,11 +33,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String email;
 
         if(authHeader == null || !authHeader.startsWith("Bearer")){
+            System.out.println("Dont have bearer");
             filterChain.doFilter(request, response);
             return;
         }
 
         jwt = authHeader.substring(7);
+
+        System.out.println("jwt: " + jwt);
+
         email = jwtService.extractUsername(jwt);
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
