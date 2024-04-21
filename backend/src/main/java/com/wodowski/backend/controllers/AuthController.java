@@ -43,18 +43,6 @@ public class AuthController {
         return items;
     }
 
-    @GetMapping("byname/{name}")
-    public GroceryItem findByName(@PathVariable String name){
-        System.out.println(name);
-        System.out.println(repository.findGroceryItemByName(name));
-        return repository.findGroceryItemByName(name);
-    }
-
-    @PostMapping("save")
-    public GroceryItem addGroceryItem(@RequestBody GroceryItem item){
-        System.out.println(item);
-        return repository.save(item);
-    }
 
     // real routes
     @PostMapping("/register")
@@ -66,7 +54,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/authentication")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request){
         return ResponseEntity.ok(authService.authenticate(request));
     }
