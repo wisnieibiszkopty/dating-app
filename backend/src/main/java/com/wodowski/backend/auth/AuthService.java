@@ -1,12 +1,11 @@
-package com.wodowski.backend.services;
+package com.wodowski.backend.auth;
 
 import com.wodowski.backend.exceptions.UserExistsException;
-import com.wodowski.backend.models.User;
+import com.wodowski.backend.user.User;
 import com.wodowski.backend.payload.requests.AuthRequest;
 import com.wodowski.backend.payload.requests.RegisterRequest;
 import com.wodowski.backend.payload.response.AuthResponse;
-import com.wodowski.backend.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.wodowski.backend.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

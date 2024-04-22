@@ -1,50 +1,22 @@
-package com.wodowski.backend.controllers;
+package com.wodowski.backend.auth;
 
 import com.wodowski.backend.exceptions.UserExistsException;
-import com.wodowski.backend.models.GroceryItem;
 import com.wodowski.backend.payload.requests.AuthRequest;
 import com.wodowski.backend.payload.requests.RegisterRequest;
 import com.wodowski.backend.payload.response.AuthResponse;
-import com.wodowski.backend.repositories.GroceryRepository;
-import com.wodowski.backend.services.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("api/auth")
 public class AuthController {
     private final AuthService authService;
 
-    @Autowired
-    GroceryRepository repository;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
-    // testing connection with mongo db database
-    @GetMapping("hello")
-    public String hello(){
-        return "Hello world";
-    }
-
-    @GetMapping("all")
-    public List<GroceryItem> getAll(){
-        List<GroceryItem> items = repository.findAll();
-        items.forEach(groceryItem -> {
-            System.out.println(groceryItem.toString());
-        });
-        return items;
-    }
-
-
-    // real routes
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody RegisterRequest request, BindingResult result) throws UserExistsException {
         if(result.hasErrors()){

@@ -1,4 +1,4 @@
-package com.wodowski.backend.models;
+package com.wodowski.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
-package com.wodowski.backend.repositories;
+package com.wodowski.backend.user;
 
-import com.wodowski.backend.models.User;
+import com.wodowski.backend.user.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

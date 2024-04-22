@@ -1,4 +1,4 @@
-package com.wodowski.backend.services;
+package com.wodowski.backend.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
