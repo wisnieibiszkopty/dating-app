@@ -1,7 +1,5 @@
 package com.wodowski.backend.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Document(collection = "users")
 @Data
@@ -22,12 +18,22 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private List<String> roles;
+    private boolean allDataProvided;
+    private String description;
+    private int age;
+    private boolean sex;
+    private Orientation orientation;
+    private String location;
+    private List<String> photosUrls;
 
+
+    // used during user registration
     public User(String username, String email, String password, List<String> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.allDataProvided = false;
     }
 
     @Override

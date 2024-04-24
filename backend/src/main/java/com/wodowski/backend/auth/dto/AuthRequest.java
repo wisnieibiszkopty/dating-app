@@ -1,4 +1,4 @@
-package com.wodowski.backend.payload.requests;
+package com.wodowski.backend.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

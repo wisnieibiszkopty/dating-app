@@ -2,10 +2,11 @@ package com.wodowski.backend.auth;
 
 import com.wodowski.backend.exceptions.UserExistsException;
 import com.wodowski.backend.user.User;
-import com.wodowski.backend.payload.requests.AuthRequest;
-import com.wodowski.backend.payload.requests.RegisterRequest;
-import com.wodowski.backend.payload.response.AuthResponse;
+import com.wodowski.backend.auth.dto.AuthRequest;
+import com.wodowski.backend.auth.dto.RegisterRequest;
+import com.wodowski.backend.auth.dto.AuthResponse;
 import com.wodowski.backend.user.UserRepository;
+import com.wodowski.backend.user.dto.BasicUserDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,10 +44,10 @@ public class AuthService {
         );
 
         System.out.println(user);
-
         repository.save(user);
+
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken);
+        return new AuthResponse(jwtToken, user);
     }
 
     public AuthResponse authenticate(AuthRequest request) {
@@ -57,8 +58,14 @@ public class AuthService {
             )
         );
 
-        User user = repository.findByEmail(request.email()).orElseThrow();
+        System.out.println(List.of(request.email(), request.password()));
+
+        User user = repository.findByEmailAndPassword
+                (request.email(), request.password()).orElseThrow();
+
+        System.out.println(user);
+
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken);
+        return new AuthResponse(jwtToken, user);
     }
 }

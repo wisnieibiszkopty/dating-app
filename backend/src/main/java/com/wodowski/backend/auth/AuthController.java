@@ -1,9 +1,9 @@
 package com.wodowski.backend.auth;
 
 import com.wodowski.backend.exceptions.UserExistsException;
-import com.wodowski.backend.payload.requests.AuthRequest;
-import com.wodowski.backend.payload.requests.RegisterRequest;
-import com.wodowski.backend.payload.response.AuthResponse;
+import com.wodowski.backend.auth.dto.AuthRequest;
+import com.wodowski.backend.auth.dto.RegisterRequest;
+import com.wodowski.backend.auth.dto.AuthResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
