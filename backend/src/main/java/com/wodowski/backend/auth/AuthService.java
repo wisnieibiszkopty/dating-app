@@ -43,14 +43,16 @@ public class AuthService {
                 List.of("User")
         );
 
-        System.out.println(user);
         repository.save(user);
+
+        System.out.println(user);
 
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken, user);
     }
 
     public AuthResponse authenticate(AuthRequest request) {
+        // authenticating user
         authManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     request.email(),
@@ -58,13 +60,15 @@ public class AuthService {
             )
         );
 
+
+        User user = repository.findByEmail(request.email()).orElseThrow();
+
         System.out.println(List.of(request.email(), request.password()));
-
-        User user = repository.findByEmailAndPassword
-                (request.email(), request.password()).orElseThrow();
-
         System.out.println(user);
 
+        // generating token for user
+        // for now returned user, but i have to change it
+        // so it will not return password etc
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken, user);
     }

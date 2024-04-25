@@ -6,6 +6,7 @@ import {LoginForm} from "../models/LoginForm";
 import {enviroment} from "../../enviroment";
 import {BehaviorSubject} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
+import {User} from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,15 @@ import {RegisterForm} from "../models/RegisterForm";
 export class AuthService {
   private apiUrl: String = enviroment.apiUrl;
   private token?: String;
+  private user?: User;
+  private headers: any;
   private authenticated = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  isAuthenticated(): boolean {
+    return this.authenticated.value;
+  }
 
   authenticate(request: LoginForm){
     let url = this.apiUrl + "auth/login";
@@ -28,7 +35,10 @@ export class AuthService {
       // i don't know yet what exactly it will return
       next: (response: any) => {
         console.log(response);
+        console.log(response.user);
         this.token = response.token;
+        this.user = response.user;
+        this.headers = {'Authorization': 'Bearer ' + this.token };
         this.authenticated.next(true);
         this.router.navigate(['/app/chats']);
       },
@@ -49,8 +59,11 @@ export class AuthService {
     }).subscribe({
       next: (response: any) => {
         console.log(response);
-
+        console.log(response.user);
         this.token = response.token;
+        this.user = response.user;
+        this.headers = {'Authorization': 'Bearer ' + this.token };
+        console.log(this.user);
         this.authenticated.next(true);
         this.router.navigate(['/app/profile']);
       },
@@ -63,5 +76,9 @@ export class AuthService {
   logout(){
     this.token = undefined;
     this.authenticated.next(false);
+  }
+
+  deleteUser(){
+    return this.http.delete(this.apiUrl + "user/" + this.user?.id, {headers: this.headers});
   }
 }

@@ -1,5 +1,6 @@
 package com.wodowski.backend.user;
 
+import com.wodowski.backend.user.dto.FullUserDTO;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -20,10 +21,15 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+
+    @Query(value = "{'email':  ?0}", fields = "{password:  0}")
+    Optional<FullUserDTO> findFullUserByEmail(String email);
     Optional<User> findByEmailAndPassword(String email, String password);
 
     boolean existsByUsernameOrEmail(String username, String email);
     boolean existsByEmailAndPassword(String email, String password);
+
+    Optional<User> deleteUserById(String id);
 
 
 }

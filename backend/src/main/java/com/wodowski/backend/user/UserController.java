@@ -1,17 +1,19 @@
 package com.wodowski.backend.user;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // for now only for testing
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("api/test")
+@RequestMapping("api/user")
 public class UserController {
+
+    private final UserService userService;
 
     @GetMapping
     public String test(){
@@ -26,6 +28,11 @@ public class UserController {
         User currentUser = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(currentUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id){
+        return ResponseEntity.ok(userService.deleteProfile(id));
     }
 
 }
