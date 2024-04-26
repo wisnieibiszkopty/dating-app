@@ -6,14 +6,13 @@ import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.
 import {AuthAppComponent} from "./components/auth-app/auth-app.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {ChatsComponent} from "./components/chats/chats.component";
+import {authGuard, guestGuard} from "./guards/auth.guard";
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
-  // need some other component as container for components
-  // which only authenticated user can see
-  { path: 'app', component: AuthAppComponent, children: [
+  { path: '', component: HomeComponent, canActivate: [guestGuard]},
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard]},
+  { path: 'register', component: RegisterComponent, canActivate: [guestGuard]},
+  { path: 'app', component: AuthAppComponent, canActivate: [authGuard], children: [
       { path: 'chats', component: ChatsComponent},
       { path: 'profile', component: ProfileComponent}
     ]},

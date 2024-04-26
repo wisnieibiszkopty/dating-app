@@ -1,10 +1,14 @@
 package com.wodowski.backend.user;
 
+import com.wodowski.backend.user.dto.ImagesRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 // for now only for testing
 
@@ -28,6 +32,13 @@ public class UserController {
         User currentUser = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(currentUser);
+    }
+
+    @PostMapping("/images/{id}")
+    public void updateImages(@PathVariable String id, @RequestBody ImagesRequest request){
+        List<MultipartFile> files = request.files();
+        List<String> filesToDelete = request.toDelete();
+        userService.updateImages(id, files, filesToDelete);
     }
 
     @DeleteMapping("/{id}")
