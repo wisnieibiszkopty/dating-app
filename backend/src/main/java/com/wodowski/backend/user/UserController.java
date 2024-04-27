@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 // for now only for testing
 
@@ -34,11 +35,18 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
-    @PostMapping("/images/{id}")
-    public void updateImages(@PathVariable String id, @RequestBody ImagesRequest request){
-        List<MultipartFile> files = request.files();
-        List<String> filesToDelete = request.toDelete();
+    // Can be async?
+    @PostMapping("/upload-images/{id}")
+    public CompletableFuture<ResponseEntity<?>> updateImages(
+        @PathVariable String id,
+        @RequestParam("files") List<MultipartFile> files,
+        @RequestParam("filesToDelete") List<String> filesToDelete){
+
         userService.updateImages(id, files, filesToDelete);
+
+        return CompletableFuture.completedFuture(
+                ResponseEntity.ok("File upload started")
+        );
     }
 
     @DeleteMapping("/{id}")

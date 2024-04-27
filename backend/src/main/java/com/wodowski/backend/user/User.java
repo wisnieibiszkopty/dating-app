@@ -1,5 +1,6 @@
 package com.wodowski.backend.user;
 
+import com.wodowski.backend.user.dto.ImageDTO;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class User implements UserDetails {
     private boolean sex;
     private Orientation orientation;
     private String location;
-    private List<String> photosUrls;
+    private List<ImageDTO> photosUrls = new ArrayList<>();
 
 
     // used during user registration
