@@ -1,7 +1,14 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
-  <input formControlName="username" placeholder="Username">
-  <input formControlName="email" placeholder="Email">
-  <input formControlName="password" placeholder="Password">
-  <input formControlName="confirmPassword" placeholder="confirmPassword">
-  <button type="submit">Sign up</button>
-</form>
+<p-card header="Create new account">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)" class="flex">
+    <p>Username</p>
+    <input pInputText formControlName="username" placeholder="Username">
+    <p>Email</p>
+    <input pInputText formControlName="email" placeholder="Email">
+    <p>Password</p>
+    <input pInputText formControlName="password" placeholder="Password">
+    <p>Confirm password</p>
+    <input pInputText formControlName="confirmPassword" placeholder="confirmPassword">
+    <button type="submit" pButton pRipple label="Sign up" class="p-button" style="margin-top:30px"></button>
+  </form>
+  <p>Already have account? <p-button label="Sign in" [text]="true" routerLink="/login"></p-button></p>
+</p-card>

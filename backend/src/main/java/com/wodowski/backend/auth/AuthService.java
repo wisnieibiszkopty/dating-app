@@ -1,5 +1,6 @@
 package com.wodowski.backend.auth;
 
+import com.wodowski.backend.auth.dto.RegisterResponse;
 import com.wodowski.backend.exceptions.UserExistsException;
 import com.wodowski.backend.user.User;
 import com.wodowski.backend.auth.dto.AuthRequest;
@@ -7,8 +8,10 @@ import com.wodowski.backend.auth.dto.RegisterRequest;
 import com.wodowski.backend.auth.dto.AuthResponse;
 import com.wodowski.backend.user.UserRepository;
 import com.wodowski.backend.user.dto.BasicUserDTO;
+import com.wodowski.backend.user.dto.FullUserDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +34,13 @@ public class AuthService {
         this.authManager = authManager;
     }
 
-    public AuthResponse register(RegisterRequest request) throws UserExistsException {
+    public RegisterResponse register(RegisterRequest request) throws UserExistsException {
         if(repository.existsByUsernameOrEmail(request.username(), request.email())){
             throw new UserExistsException("User with this email or username already exists!");
         }
 
         User user = new User(
+                request.username(),
                 request.username(),
                 request.email(),
                 passwordEncoder.encode(request.password()),
@@ -45,13 +49,19 @@ public class AuthService {
 
         repository.save(user);
 
-        System.out.println(user);
+        BasicUserDTO basicUser = new BasicUserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRoles(),
+                user.isAllDataProvided()
+        );
 
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken, user);
+        return new RegisterResponse(jwtToken, basicUser);
     }
 
-    public AuthResponse authenticate(AuthRequest request) {
+    public AuthResponse authenticate(AuthRequest request){
         // authenticating user
         authManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -60,16 +70,16 @@ public class AuthService {
             )
         );
 
-
         User user = repository.findByEmail(request.email()).orElseThrow();
 
-        System.out.println(List.of(request.email(), request.password()));
-        System.out.println(user);
+        FullUserDTO responseUser = new FullUserDTO(
+                user.getId(), user.getName(), user.getEmail(),
+                user.getRoles(), user.isAllDataProvided(), user.getDescription(),
+                user.getAge(), user.isSex(), user.getOrientation(),
+                user.getLocation(), user.getPhotosUrls()
+        );
 
-        // generating token for user
-        // for now returned user, but i have to change it
-        // so it will not return password etc
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken, user);
+        return new AuthResponse(jwtToken, responseUser);
     }
 }

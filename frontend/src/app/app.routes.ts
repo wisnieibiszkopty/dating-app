@@ -10,10 +10,10 @@ import {authGuard, guestGuard} from "./guards/auth.guard";
 import {AuthAppComponent} from "./components/auth-app/auth-app.component";
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [guestGuard]},
-  { path: 'login', component: LoginComponent, canActivate: [guestGuard]},
-  { path: 'register', component: RegisterComponent, canActivate: [guestGuard]},
-  { path: 'app', component: AuthAppComponent, canActivate: [authGuard], children: [
+  { path: '', component: HomeComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
+  { path: 'app', component: AuthAppComponent, children: [
       { path: 'chats', component: ChatsComponent},
       { path: 'profile', component: ProfileComponent}
     ]},

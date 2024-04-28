@@ -15,6 +15,6 @@ public record FullUserDTO(
    boolean sex,
    Orientation orientation,
    String location,
-   List<String> photosUrls
+   List<ImageDTO> images
 
 ) {}

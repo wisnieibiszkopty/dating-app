@@ -16,8 +16,10 @@ import java.util.List;
 @Data
 public class User implements UserDetails {
     @Id private String id;
+    // this username is only used for authentication
     private String username;
     private String email;
+    private String name;
     private String password;
     private List<String> roles;
     private boolean allDataProvided;
@@ -30,8 +32,9 @@ public class User implements UserDetails {
 
 
     // used during user registration
-    public User(String username, String email, String password, List<String> roles) {
+    public User(String username, String name, String email, String password, List<String> roles) {
         this.username = username;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;

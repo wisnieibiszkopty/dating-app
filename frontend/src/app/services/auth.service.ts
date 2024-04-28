@@ -18,7 +18,9 @@ export class AuthService {
   private headers: any;
   private authenticated = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router) {}
 
   isAuthenticated(): boolean {
     return this.authenticated.value;
@@ -32,15 +34,14 @@ export class AuthService {
       email: request.email,
       password: request.password
     }).subscribe({
-      // i don't know yet what exactly it will return
-      next: (response: any) => {
-        console.log(response);
-        console.log(response.user);
-        this.token = response.token;
-        this.user = response.user;
-        this.headers = {'Authorization': 'Bearer ' + this.token };
-        this.authenticated.next(true);
-        this.router.navigate(['/app/chats']);
+      next: (res: any) => {
+        this.initAuth(res.token);
+        console.log(res.user);
+        this.user = new User(
+          res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide,
+          res.user.age, res.user.sex, res.user.orientation, res.user.location, res.user.images
+        );
+        this.router.navigate(['/app/profile']);
       },
       error: (err) => {
         console.error(err);
@@ -57,20 +58,31 @@ export class AuthService {
       email: request.email,
       password: request.password
     }).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        console.log(response.user);
-        this.token = response.token;
-        this.user = response.user;
-        this.headers = {'Authorization': 'Bearer ' + this.token };
-        console.log(this.user);
-        this.authenticated.next(true);
+      next: (res: any) => {
+        this.initAuth(res.token);
+        console.log(res.user);
+        this.user = new User(res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide);
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
         console.error(err);
       }
     })
+  }
+
+  initAuth(token: String){
+    console.log(token);
+    this.token = token;
+    this.headers = {'Authorization': 'Bearer ' + this.token };
+    this.authenticated.next(true);
+  }
+
+  setUser(user: User){
+    this.user = user;
+  }
+
+  getUser(): User | undefined {
+    return this.user;
   }
 
   logout(){
