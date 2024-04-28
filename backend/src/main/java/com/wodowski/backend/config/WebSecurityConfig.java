@@ -10,6 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -25,9 +31,23 @@ public class WebSecurityConfig {
         this.filter = filter;
     }
 
+
+    CorsConfigurationSource apiConfigurationSource(){
+        CorsConfiguration conf = new CorsConfiguration();
+        conf.setAllowedOrigins(List.of("http://localhost:4200"));
+        conf.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        conf.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", conf);
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+            .cors((cors) -> {
+                cors.configurationSource(apiConfigurationSource());
+            })
             .authorizeHttpRequests(
                 auth -> auth.requestMatchers("/api/auth/**")
                     .permitAll()

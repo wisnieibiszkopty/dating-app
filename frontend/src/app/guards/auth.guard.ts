@@ -13,22 +13,24 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  console.log(authService.isAuthenticated());
+
   if(authService.isAuthenticated()){
     return true;
   }
 
-  router.parseUrl('/login');
-  return false;
+  return router.parseUrl('/login');
 }
 
 export const guestGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  console.log(authService.isAuthenticated());
+
   if(!authService.isAuthenticated()){
     return true;
   }
 
-  router.parseUrl('/app/chats');
-  return false;
+  return router.parseUrl('/app/profile');
 }
