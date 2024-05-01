@@ -9,6 +9,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {ChipsModule} from "primeng/chips";
 import {FileUploadModule} from "primeng/fileupload";
 import {CheckboxModule} from "primeng/checkbox";
+import {UserService} from "../../shared/services/user.service";
 
 @Component({
   selector: 'app-user-details',
@@ -42,14 +43,14 @@ export class UserDetailsComponent {
       {orientation: "bisexual"}
     ];
 
-    images = [];
+    images: File[] = [];
 
     sexes = [
       {value: "male", label: 'Male', controlName: "preferredSex1"},
       {value: "female", label: 'Female', controlName: "preferredSex2"}
     ];
 
-    constructor() {
+    constructor(private userService: UserService) {
       this.basicInfoForm = new FormGroup({
         sex: new FormControl('', Validators.required),
         selectedOrientation: new FormControl('', Validators.required),
@@ -74,8 +75,26 @@ export class UserDetailsComponent {
       });
     }
 
-    confirmImages(){
+    // handle file clear and delete
+    onFileSelected(event: any){
+      console.log(event.files);
+      console.log(typeof event.files);
+      for(let file of event.files) {
+        this.images.push(file);
+      }
+    }
 
+    confirmImages(){
+      console.log(this.images.length);
+      console.log(this.images);
+      this.userService.uploadPictures(this.images).subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
     }
 
     confirmPreferences(){

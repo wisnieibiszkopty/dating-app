@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {LoginForm} from "../models/LoginForm";
 
 import {enviroment} from "../../../enviroment";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";
 
@@ -13,21 +13,36 @@ import {User} from "../models/User";
   providedIn: 'root'
 })
 export class AuthService implements OnInit, OnDestroy{
-  private apiUrl: String = enviroment.apiUrl;
-  private token?: String;
-  private user: User = new User("", "", "", [""], false);
+  private apiUrl: string = enviroment.apiUrl;
+  private token: BehaviorSubject<string> = new BehaviorSubject<string>("");
+  private user: BehaviorSubject<User> = new BehaviorSubject<User>(new User("", "", "", [""], false));
   private headers: any;
-  private authenticated = new BehaviorSubject<boolean>(false);
+  private authenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
-    private router: Router) {}
+    private router: Router) {
+      // check why it is not emitted
+      const tokenFromStorage = localStorage.getItem("token");
+
+      if(tokenFromStorage !== null){
+        this.token.next(tokenFromStorage);
+      }
+
+      console.log(this.token.value);
+
+      const userFromStorage = localStorage.getItem("user");
+
+      if(userFromStorage !== null){
+        this.user.next(JSON.parse(userFromStorage));
+      }
+  }
 
   ngOnInit(): void {
-    let user = sessionStorage.getItem("user");
-    if(user !== null){
-      this.user = JSON.parse(user);
-    }
+    // let user = sessionStorage.getItem("user");
+    // if(user !== null){
+    //   this.user = JSON.parse(user);
+    // }
   }
 
   isAuthenticated(): boolean {
@@ -80,29 +95,39 @@ export class AuthService implements OnInit, OnDestroy{
     })
   }
 
-  initAuth(token: String){
+  initAuth(token: string){
     console.log(token);
-    this.token = token;
+    this.token.next(token);
     this.headers = {'Authorization': 'Bearer ' + this.token };
     this.authenticated.next(true);
+    localStorage.setItem("token", token);
   }
 
   setUser(user: User){
-    this.user = user;
+    this.user.next(user);
+    localStorage.setItem("user", JSON.stringify(user));
   }
 
   getUser(): User {
+    return this.user.value;
+  }
+
+  getUserAsObservable(): Observable<User> {
     // if website will be refreshed by browser user will be gone :<
-    return this.user;
+    return this.user.asObservable();
+  }
+
+  getToken(): Observable<string>{
+    return this.token.asObservable();
   }
 
   logout(){
-    this.token = undefined;
+    this.token.next("");
     this.authenticated.next(false);
   }
 
   deleteUser(){
-    return this.http.delete(this.apiUrl + "user/" + this.user?.id, {headers: this.headers});
+    return this.http.delete(this.apiUrl + "user/" + this.user?.value.id, {headers: this.headers});
   }
 
   ngOnDestroy() {

@@ -1,5 +1,19 @@
 <p-stepper orientation="vertical" [linear]="true">
 
+  <p-stepperPanel header="Upload images">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+      <h1>Upload to 10 of your photos</h1>
+      <h4>If you don't won't to use them click next button</h4>
+      <p-fileUpload name="images[]" (onSelect)="onFileSelected($event)" [multiple]="true" [showUploadButton]="false" accept="image/*" maxFileSize="100000000000">
+        <ng-template pTemplate="toolbar">
+          <p-button label="Upload" (click)="confirmImages()" [disabled]="images.length === 0"></p-button>
+        </ng-template>
+      </p-fileUpload>
+      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+      <p-button label="Next" (onClick)="nextCallback.emit()"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
   <p-stepperPanel header="Basic info">
     <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
       <form [formGroup]="basicInfoForm">
@@ -52,17 +66,6 @@
       </div>
       <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
       <p-button label="Next" (onClick)="nextCallback.emit()" [disabled]="!locationForm.valid"></p-button>
-    </ng-template>
-  </p-stepperPanel>
-
-  <p-stepperPanel header="Upload images">
-    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-      <h1>Upload to 10 of your photos</h1>
-      <h4>If you don't won't to use them click next button</h4>
-      <p-fileUpload name="images[]" [multiple]="true" [showUploadButton]="false" accept="image/*" maxFileSize="100000000000">
-      </p-fileUpload>
-      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
-      <p-button label="Next" (onClick)="nextCallback.emit()"></p-button>
     </ng-template>
   </p-stepperPanel>
 
