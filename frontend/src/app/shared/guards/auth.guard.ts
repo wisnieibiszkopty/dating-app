@@ -33,12 +33,20 @@ export const allDataProvidedGuard: CanActivateFn = (route: ActivatedRouteSnapsho
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  console.log("all data provided");
-  console.log(authService.getUser().allDataProvide);
-
   if(authService.getUser().allDataProvide){
     return true;
   }
 
   return router.parseUrl('/app/user-details');
+}
+
+export const notAllDataProvidedGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if(!authService.getUser().allDataProvide){
+    return true;
+  }
+
+  return router.parseUrl('/app/profile');
 }

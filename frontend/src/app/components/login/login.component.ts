@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import {AuthService} from "../../services/auth.service";
+import {Component} from '@angular/core';
+import {AuthService} from "../../shared/services/auth.service";
 import {RouterLink} from "@angular/router";
-import {FormsModule, NgForm} from "@angular/forms";
-import {LoginForm} from "../../models/LoginForm";
+import {FormsModule} from "@angular/forms";
+import {LoginForm} from "../../shared/models/LoginForm";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {CardModule} from "primeng/card";

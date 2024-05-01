@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {LoginForm} from "../models/LoginForm";
 
-import {enviroment} from "../../enviroment";
+import {enviroment} from "../../../enviroment";
 import {BehaviorSubject} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";

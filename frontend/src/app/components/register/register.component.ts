@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisterForm} from "../../models/RegisterForm";
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../../shared/services/auth.service";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {CardModule} from "primeng/card";
 import {ButtonModule} from "primeng/button";

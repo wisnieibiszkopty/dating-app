@@ -1,0 +1,98 @@
+<p-stepper orientation="vertical" [linear]="true">
+
+  <p-stepperPanel header="Basic info">
+    <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+      <form [formGroup]="basicInfoForm">
+        <div>
+          <p-radioButton name="sex" value="male" formControlName="sex" id="male"></p-radioButton>
+          <label for="male">Male</label>
+        </div>
+        <div>
+          <p-radioButton name="sex" value="female" formControlName="sex" id="female"></p-radioButton>
+          <label for="female">Female</label>
+        </div>
+        <p-dropdown [options]="orientations" formControlName="selectedOrientation" optionLabel="orientation" [showClear]="true" placeholder="Select your orientation">
+        </p-dropdown>
+        @if(basicInfoForm.get('age')?.invalid && (basicInfoForm.get('age')?.dirty || basicInfoForm.get('age')?.touched)){
+          <p>You must enter age between 18 and 120</p>
+        }
+        <p>Age</p>
+        <p-inputNumber inputId="age" formControlName="age" [useGrouping]="false"></p-inputNumber>
+      </form>
+      <p-button label="Next" (onClick)="nextCallback.emit()" [disabled]="!basicInfoForm.valid"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="Description">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+      <h1>Enter your description</h1>
+      @if(descriptionForm.get('description')?.invalid && (descriptionForm.get('description')?.dirty || descriptionForm.get('description')?.touched)){
+        <p>Description cannot be empty, and longer than 500 characters!</p>
+      }
+      <div [formGroup]="descriptionForm">
+        <span class="p-float-label">
+        <textarea id="description" rows="5" cols="30" formControlName="description" pInputTextarea></textarea>
+        <label for="description">Write something here...</label>
+      </span>
+      </div>
+      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+      <p-button label="Next" (onClick)="nextCallback.emit()" [disabled]="!descriptionForm.valid"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
+  <!-- Add map here ??? -->
+  <p-stepperPanel header="Location">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+      <h1>Enter your location</h1>
+      @if(locationForm.get('location')?.invalid && (locationForm.get('location')?.dirty || locationForm.get('location')?.touched)){
+        <p>Location cannot be empty, and longer than 50 characters!</p>
+      }
+      <div [formGroup]="locationForm">
+        <input pInputText placeholder="Location" formControlName="location">
+      </div>
+      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+      <p-button label="Next" (onClick)="nextCallback.emit()" [disabled]="!locationForm.valid"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="Upload images">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+      <h1>Upload to 10 of your photos</h1>
+      <h4>If you don't won't to use them click next button</h4>
+      <p-fileUpload name="images[]" [multiple]="true" [showUploadButton]="false" accept="image/*" maxFileSize="100000000000">
+      </p-fileUpload>
+      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+      <p-button label="Next" (onClick)="nextCallback.emit()"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="Preferences">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+      <form [formGroup]="preferencesForm">
+        <p>Minimal age</p>
+        @if(preferencesForm.get('minAge')?.invalid && (preferencesForm.get('minAge')?.dirty || preferencesForm.get('minAge')?.touched)){
+          <p>You must enter age between 18 and 120</p>
+        }
+        <p-inputNumber inputId="minAge" formControlName="minAge" [useGrouping]="false"></p-inputNumber>
+        <p>Maximal age</p>
+        @if(preferencesForm.get('maxAge')?.invalid && (preferencesForm.get('maxAge')?.dirty || preferencesForm.get('maxAge')?.touched)){
+          <p>You must enter age between 18 and 120</p>
+        }
+        <p-inputNumber inputId="maxAge" formControlName="maxAge" [useGrouping]="false"></p-inputNumber>
+          <div>
+            <h4>Sex</h4>
+            @for (sex of sexes; track sex){
+              <p-checkbox [value]="sex.value" [label]="sex.label" formControlName="{{sex.controlName}}"></p-checkbox>
+            }
+          </div>
+        <input pInputText placeholder="Location" formControlName="preferredLocation">
+        @if(preferencesForm.get('preferredLocation')?.invalid && (preferencesForm.get('preferredLocation')?.dirty || preferencesForm.get('preferredLocation')?.touched)){
+          <p>Location cannot be empty, and longer than 50 characters!</p>
+        }
+      </form>
+      <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+      <p-button label="Submit" (onClick)="confirmPreferences()"></p-button>
+    </ng-template>
+  </p-stepperPanel>
+
+</p-stepper>

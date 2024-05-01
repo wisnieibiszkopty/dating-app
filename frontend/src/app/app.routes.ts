@@ -6,7 +6,7 @@ import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.
 
 import {ProfileComponent} from "./components/profile/profile.component";
 import {ChatsComponent} from "./components/chats/chats.component";
-import {allDataProvidedGuard} from "./guards/auth.guard";
+import {allDataProvidedGuard, notAllDataProvidedGuard} from "./shared/guards/auth.guard";
 import {AuthAppComponent} from "./components/auth-app/auth-app.component";
 import {UserDetailsComponent} from "./components/user-details/user-details.component";
 
@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'app', component: AuthAppComponent, children: [
       { path: 'chats', component: ChatsComponent, canActivate: [allDataProvidedGuard]},
       { path: 'profile', component: ProfileComponent, canActivate: [allDataProvidedGuard]},
-      { path: 'user-details', component: UserDetailsComponent}
+      { path: 'user-details', component: UserDetailsComponent, canActivate: [notAllDataProvidedGuard]}
     ]},
   { path: '**', component: PageNotFoundComponent}
 ];
