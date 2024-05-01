@@ -29,6 +29,7 @@ public class User implements UserDetails {
     private Orientation orientation;
     private String location;
     private List<ImageDTO> photosUrls = new ArrayList<>();
+    private Preference preference;
 
 
     // used during user registration

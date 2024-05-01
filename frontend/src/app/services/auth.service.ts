@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {LoginForm} from "../models/LoginForm";
@@ -8,19 +8,27 @@ import {BehaviorSubject} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit, OnDestroy{
   private apiUrl: String = enviroment.apiUrl;
   private token?: String;
-  private user?: User;
+  private user: User = new User("", "", "", [""], false);
   private headers: any;
   private authenticated = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
     private router: Router) {}
+
+  ngOnInit(): void {
+    let user = sessionStorage.getItem("user");
+    if(user !== null){
+      this.user = JSON.parse(user);
+    }
+  }
 
   isAuthenticated(): boolean {
     return this.authenticated.value;
@@ -37,10 +45,12 @@ export class AuthService {
       next: (res: any) => {
         this.initAuth(res.token);
         console.log(res.user);
-        this.user = new User(
+        let user = new User(
           res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide,
-          res.user.age, res.user.sex, res.user.orientation, res.user.location, res.user.images
+          res.user.age, res.user.sex, res.user.orientation, res.user.location, res.user.images, res.user.preference
         );
+        console.log(user);
+        this.setUser(user);
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
@@ -61,7 +71,7 @@ export class AuthService {
       next: (res: any) => {
         this.initAuth(res.token);
         console.log(res.user);
-        this.user = new User(res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide);
+        this.setUser(new User(res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide));
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
@@ -81,7 +91,8 @@ export class AuthService {
     this.user = user;
   }
 
-  getUser(): User | undefined {
+  getUser(): User {
+    // if website will be refreshed by browser user will be gone :<
     return this.user;
   }
 
@@ -92,5 +103,9 @@ export class AuthService {
 
   deleteUser(){
     return this.http.delete(this.apiUrl + "user/" + this.user?.id, {headers: this.headers});
+  }
+
+  ngOnDestroy() {
+    localStorage.setItem("user", JSON.stringify(this.user));
   }
 }

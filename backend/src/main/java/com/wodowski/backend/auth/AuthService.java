@@ -76,7 +76,7 @@ public class AuthService {
                 user.getId(), user.getName(), user.getEmail(),
                 user.getRoles(), user.isAllDataProvided(), user.getDescription(),
                 user.getAge(), user.isSex(), user.getOrientation(),
-                user.getLocation(), user.getPhotosUrls()
+                user.getLocation(), user.getPhotosUrls(), user.getPreference()
         );
 
         String jwtToken = jwtService.generateToken(user);

@@ -1,16 +1,18 @@
 import {File} from "./File";
+import {Preference} from "./Preference";
 
 export class User {
   id: string;
   username: string;
   email: string;
-  roles: [string];
+  roles: string[];
   allDataProvide: boolean;
   age?: number;
   sex?: boolean;
   orientation?: string;
   location?: string;
-  images?: File;
+  images?: File[];
+  preference?: Preference;
 
 
   // for basic user
@@ -18,13 +20,14 @@ export class User {
     id: string,
     username: string,
     email: string,
-    roles: [string],
+    roles: string[],
     allDataProvide: boolean,
     age?: number,
     sex?: boolean,
     orientation?: string,
     location?: string,
-    images?: File) {
+    images?: File[],
+    preference?: Preference) {
       this.id = id;
       this.username = username;
       this.email = email;
@@ -35,5 +38,6 @@ export class User {
       this.orientation = orientation;
       this.location = location;
       this.images = images;
+      this.preference = preference;
   }
 }
