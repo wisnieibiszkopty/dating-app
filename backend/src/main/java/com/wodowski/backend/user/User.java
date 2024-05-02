@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String description;
     private int age;
     private boolean sex;
-    private Orientation orientation;
+    private String orientation;
     private String location;
     private List<ImageDTO> photosUrls = new ArrayList<>();
     private Preference preference;

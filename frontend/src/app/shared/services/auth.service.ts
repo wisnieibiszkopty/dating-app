@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {LoginForm} from "../models/LoginForm";
@@ -12,7 +12,7 @@ import {User} from "../models/User";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnInit, OnDestroy{
+export class AuthService{
   private apiUrl: string = enviroment.apiUrl;
   private token: BehaviorSubject<string> = new BehaviorSubject<string>("");
   private user: BehaviorSubject<User> = new BehaviorSubject<User>(new User("", "", "", [""], false));
@@ -22,27 +22,15 @@ export class AuthService implements OnInit, OnDestroy{
   constructor(
     private http: HttpClient,
     private router: Router) {
-      // check why it is not emitted
       const tokenFromStorage = localStorage.getItem("token");
-
       if(tokenFromStorage !== null){
         this.token.next(tokenFromStorage);
       }
 
-      console.log(this.token.value);
-
       const userFromStorage = localStorage.getItem("user");
-
       if(userFromStorage !== null){
         this.user.next(JSON.parse(userFromStorage));
       }
-  }
-
-  ngOnInit(): void {
-    // let user = sessionStorage.getItem("user");
-    // if(user !== null){
-    //   this.user = JSON.parse(user);
-    // }
   }
 
   isAuthenticated(): boolean {
@@ -61,8 +49,9 @@ export class AuthService implements OnInit, OnDestroy{
         this.initAuth(res.token);
         console.log(res.user);
         let user = new User(
-          res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide,
-          res.user.age, res.user.sex, res.user.orientation, res.user.location, res.user.images, res.user.preference
+          res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvided,
+          res.user.age, res.user.sex, res.user.orientation, res.user.description,
+          res.user.location, res.user.images, res.user.preference
         );
         console.log(user);
         this.setUser(user);
@@ -128,9 +117,5 @@ export class AuthService implements OnInit, OnDestroy{
 
   deleteUser(){
     return this.http.delete(this.apiUrl + "user/" + this.user?.value.id, {headers: this.headers});
-  }
-
-  ngOnDestroy() {
-    localStorage.setItem("user", JSON.stringify(this.user));
   }
 }

@@ -33,7 +33,7 @@ export const allDataProvidedGuard: CanActivateFn = (route: ActivatedRouteSnapsho
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if(authService.getUser().allDataProvide){
+  if(authService.getUser().allDataProvided){
     return true;
   }
 
@@ -44,7 +44,7 @@ export const notAllDataProvidedGuard: CanActivateFn = (route: ActivatedRouteSnap
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if(!authService.getUser().allDataProvide){
+  if(!authService.getUser().allDataProvided){
     return true;
   }
 

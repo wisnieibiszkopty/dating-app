@@ -6,10 +6,11 @@ export class User {
   username: string;
   email: string;
   roles: string[];
-  allDataProvide: boolean;
+  allDataProvided: boolean;
   age?: number;
   sex?: boolean;
   orientation?: string;
+  description?: string;
   location?: string;
   images?: File[];
   preference?: Preference;
@@ -21,10 +22,11 @@ export class User {
     username: string,
     email: string,
     roles: string[],
-    allDataProvide: boolean,
+    allDataProvided: boolean,
     age?: number,
     sex?: boolean,
     orientation?: string,
+    description?: string,
     location?: string,
     images?: File[],
     preference?: Preference) {
@@ -32,10 +34,11 @@ export class User {
       this.username = username;
       this.email = email;
       this.roles = roles;
-      this.allDataProvide = allDataProvide;
+      this.allDataProvided = allDataProvided;
       this.age = age;
       this.sex = sex;
       this.orientation = orientation;
+      this.description = description;
       this.location = location;
       this.images = images;
       this.preference = preference;

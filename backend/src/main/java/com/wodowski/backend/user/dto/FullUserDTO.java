@@ -14,7 +14,7 @@ public record FullUserDTO(
     String description,
     int age,
     boolean sex,
-    Orientation orientation,
+    String orientation,
     String location,
     List<ImageDTO> images,
     Preference preference

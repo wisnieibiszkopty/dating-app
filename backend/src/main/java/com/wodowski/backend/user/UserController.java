@@ -1,5 +1,6 @@
 package com.wodowski.backend.user;
 
+import com.wodowski.backend.user.dto.FullUserDTO;
 import com.wodowski.backend.user.dto.ImagesRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +50,16 @@ public class UserController {
         );
     }
 
+
+    @PatchMapping
+    public ResponseEntity<?> updateUser(@RequestBody FullUserDTO user){
+        return ResponseEntity.ok(userService.updateProfile(user));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable String id){
         return ResponseEntity.ok(userService.deleteProfile(id));
     }
 
 }
+

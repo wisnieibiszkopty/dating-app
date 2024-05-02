@@ -1,6 +1,7 @@
 package com.wodowski.backend.user;
 
 import com.wodowski.backend.fileStorage.FileStorageService;
+import com.wodowski.backend.user.dto.FullUserDTO;
 import com.wodowski.backend.user.dto.ImageDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,24 @@ public class UserService {
 
         user.setPhotosUrls(imagesList);
         repository.save(user);
-
     }
 
-    private void updateProfile(){
+    public FullUserDTO updateProfile(FullUserDTO user){
+        User userToUpdate = repository.findById(user.id()).orElseThrow();
 
+        // TODO find better way
+        userToUpdate.setEmail(user.email());
+        userToUpdate.setUsername(user.email());
+        userToUpdate.setName(user.username());
+        userToUpdate.setAllDataProvided(true);
+        userToUpdate.setAge(user.age());
+        userToUpdate.setSex(user.sex());
+        userToUpdate.setOrientation(user.orientation());
+        userToUpdate.setLocation(user.location());
+        userToUpdate.setPreference(user.preference());
+
+        repository.save(userToUpdate);
+        return user;
     }
 
     public User deleteProfile(String id){

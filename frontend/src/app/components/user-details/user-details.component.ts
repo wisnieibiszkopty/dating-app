@@ -10,6 +10,8 @@ import {ChipsModule} from "primeng/chips";
 import {FileUploadModule} from "primeng/fileupload";
 import {CheckboxModule} from "primeng/checkbox";
 import {UserService} from "../../shared/services/user.service";
+import {Preference} from "../../shared/models/Preference";
+import {BasicInfo} from "../../shared/models/BasicInfo";
 
 @Component({
   selector: 'app-user-details',
@@ -77,16 +79,12 @@ export class UserDetailsComponent {
 
     // handle file clear and delete
     onFileSelected(event: any){
-      console.log(event.files);
-      console.log(typeof event.files);
       for(let file of event.files) {
         this.images.push(file);
       }
     }
 
     confirmImages(){
-      console.log(this.images.length);
-      console.log(this.images);
       this.userService.uploadPictures(this.images).subscribe({
         next: (res) => {
           console.log(res);
@@ -98,7 +96,33 @@ export class UserDetailsComponent {
     }
 
     confirmPreferences(){
+      if(this.basicInfoForm.valid &&
+        this.descriptionForm.valid &&
+        this.locationForm.valid &&
+        this.preferencesForm.valid){
+          const pref = this.preferencesForm.value;
 
+          console.log(pref);
+          console.log(this.basicInfoForm.value);
+          console.log(this.locationForm.value);
+          console.log(this.descriptionForm.value);
+          // let preference = new Preference(
+          //   pref.minAge, pref.maxAge, [pref.preferredSex1.value, pref.preferredSex2.value], pref.location
+          // );
+          console.log(this.basicInfoForm.value.selectedOrientation.orientation);
+
+        const basicInfo = new BasicInfo(
+          this.basicInfoForm.value.sex,
+          this.basicInfoForm.value.selectedOrientation.orientation,
+          this.basicInfoForm.value.age
+        )
+
+          this.userService.updateUserData(
+            basicInfo,
+            this.descriptionForm.value.description,
+            this.locationForm.value.location,
+            new Preference(20, 20, [false, false], "test"));
+      }
     }
 
 }
