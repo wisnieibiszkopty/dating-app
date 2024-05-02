@@ -31,6 +31,11 @@ export class UserService implements OnInit, OnDestroy{
 
   }
 
+  // handle data change
+  getUser(): User{
+    return this.user;
+  }
+
   // UPDATE IMAGES IN USER
   uploadPictures(files: File[], filesToDelete?: string[]): Observable<any>{
     console.log("id" + this.user.id);
@@ -82,6 +87,10 @@ export class UserService implements OnInit, OnDestroy{
         console.error(err);
       }
     })
+  }
+
+  deleteUser(){
+    return this.http.delete(this.apiUrl + "user/" + this.user.id, {headers: this.headers});
   }
 
   ngOnDestroy() {

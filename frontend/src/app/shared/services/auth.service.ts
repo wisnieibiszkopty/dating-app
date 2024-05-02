@@ -112,10 +112,7 @@ export class AuthService{
 
   logout(){
     this.token.next("");
+    this.headers = {'Authorization': 'Bearer ' + this.token };
     this.authenticated.next(false);
-  }
-
-  deleteUser(){
-    return this.http.delete(this.apiUrl + "user/" + this.user?.value.id, {headers: this.headers});
   }
 }

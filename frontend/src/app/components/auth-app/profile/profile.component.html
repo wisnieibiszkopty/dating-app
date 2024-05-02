@@ -1,0 +1,12 @@
+<h1>Profile {{user.username}}</h1>
+<p>{{user.description}}</p>
+<p>{{user.orientation}}</p>
+<p>{{user.email}}</p>
+<!-- get proper file names-->
+@for(image of user.images; track image){
+  <p>image: {{image.filename}}</p>
+  <img src="{{image.filepath}}" alt="{{image.filename}}">
+}
+<button (click)="checkUserData()">Check user data</button>
+<button (click)="deleteAccount()">Delete account</button>
+<a routerLink="/app/chats">Chats</a>

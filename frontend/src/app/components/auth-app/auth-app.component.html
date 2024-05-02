@@ -1,3 +1,10 @@
 <!-- Add sidebar or something like that to navigate-->
-<p>auth-app works!</p>
+@if(!isMobile){
+  <app-menu class="menu"></app-menu>
+} @else {
+  <p-sidebar [(visible)]="sidebarVisible">
+    <app-menu></app-menu>
+  </p-sidebar>
+  <p-button (click)="sidebarVisible=true" label="Sidebar"></p-button>
+}
 <router-outlet></router-outlet>

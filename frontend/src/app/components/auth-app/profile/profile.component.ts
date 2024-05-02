@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {AuthService} from "../../shared/services/auth.service";
 import {RouterLink} from "@angular/router";
+import {UserService} from "../../../shared/services/user.service";
+import {User} from "../../../shared/models/User";
 
 @Component({
   selector: 'app-profile',
@@ -13,14 +14,18 @@ import {RouterLink} from "@angular/router";
 })
 export class ProfileComponent{
 
-  constructor(private authService: AuthService){}
+  user: User;
+
+  constructor(private userService: UserService){
+    this.user = userService.getUser();
+  }
 
   checkUserData(){
-    console.log(this.authService.getUser());
+    console.log(this.userService);
   }
 
   deleteAccount(){
-    this.authService.deleteUser().subscribe({
+    this.userService.deleteUser().subscribe({
       next: (result) => {
         console.log(result);
       },

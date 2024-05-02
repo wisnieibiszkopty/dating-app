@@ -9,9 +9,9 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {ChipsModule} from "primeng/chips";
 import {FileUploadModule} from "primeng/fileupload";
 import {CheckboxModule} from "primeng/checkbox";
-import {UserService} from "../../shared/services/user.service";
-import {Preference} from "../../shared/models/Preference";
-import {BasicInfo} from "../../shared/models/BasicInfo";
+import {UserService} from "../../../shared/services/user.service";
+import {Preference} from "../../../shared/models/Preference";
+import {BasicInfo} from "../../../shared/models/BasicInfo";
 
 @Component({
   selector: 'app-user-details',
