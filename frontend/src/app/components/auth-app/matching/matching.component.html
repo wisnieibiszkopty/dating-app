@@ -1,1 +1,14 @@
-<p>matching works!</p>
+<p-card>
+  <!-- Replace with gallery of match images -->
+  <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.myanimelist.net%2Fimages%2Fcharacters%2F4%2F489561.jpg&f=1&nofb=1&ipt=e5fa4bd008e4cfb4d6238ae8b20216a329c0feedf8a4afe59c774a5174d4482e&ipo=images1">
+  <h1>{{match?.name}}</h1>
+  <p>Age: {{match?.age}}</p>
+  <p>Sex: {{match?.sex ? "Male" : "Female"}}</p>
+  <p>Orientation: {{match?.orientation}}</p>
+  <p>Location: {{match?.location}}</p>
+  <p>{{match?.description}}</p>
+  <div style="display: flex; justify-content: space-around;">
+    <p-button label="Reject" severity="danger" (click)="onReject()"></p-button>
+    <p-button label="Accept" severity="success" (click)="onAccept()"></p-button>
+  </div>
+</p-card>

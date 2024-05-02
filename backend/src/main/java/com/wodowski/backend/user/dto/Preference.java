@@ -1,4 +1,4 @@
-package com.wodowski.backend.user;
+package com.wodowski.backend.user.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

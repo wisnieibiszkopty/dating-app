@@ -1,6 +1,7 @@
 package com.wodowski.backend.user;
 
 import com.wodowski.backend.user.dto.ImageDTO;
+import com.wodowski.backend.user.dto.Preference;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,5 +1,12 @@
 :host{
   display: flex;
+  flex-direction: row;
   height: 96vh;
   margin: 2vh 1vw 2vh 1vw;
+}
+
+@media (max-width: 768px){
+  :host{
+    flex-direction: column;
+  }
 }

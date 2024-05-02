@@ -1,8 +1,5 @@
 package com.wodowski.backend.user.dto;
 
-import com.wodowski.backend.user.Orientation;
-import com.wodowski.backend.user.Preference;
-
 import java.util.List;
 
 public record FullUserDTO(
