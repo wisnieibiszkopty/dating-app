@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {LoginForm} from "../models/LoginForm";
 
-import {enviroment} from "../../../enviroment";
+import {environment} from "../../../environment";
 import {BehaviorSubject, Observable} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";
@@ -13,7 +13,7 @@ import {User} from "../models/User";
   providedIn: 'root'
 })
 export class AuthService{
-  private apiUrl: string = enviroment.apiUrl;
+  private apiUrl: string = environment.apiUrl;
   private token: BehaviorSubject<string> = new BehaviorSubject<string>("");
   private user: BehaviorSubject<User> = new BehaviorSubject<User>(new User("", "", "", [""], false));
   private headers: any;
@@ -48,13 +48,8 @@ export class AuthService{
       next: (res: any) => {
         this.initAuth(res.token);
         console.log(res);
-        let user = new User(
-          res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvided,
-          res.user.age, res.user.sex, res.user.orientation, res.user.description,
-          res.user.location, res.user.images, res.user.preference
-        );
-        console.log(user);
-        this.setUser(user);
+        console.log(res.user);
+        this.setUser(res.user);
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
@@ -75,7 +70,7 @@ export class AuthService{
       next: (res: any) => {
         this.initAuth(res.token);
         console.log(res.user);
-        this.setUser(new User(res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvide));
+        this.setUser(new User(res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvided));
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
@@ -88,6 +83,7 @@ export class AuthService{
     console.log(token);
     this.token.next(token);
     this.headers = {'Authorization': 'Bearer ' + this.token };
+    environment.authToken = token;
     this.authenticated.next(true);
     localStorage.setItem("token", token);
   }

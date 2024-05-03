@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from "@angular/core";
-import {enviroment} from "../../../enviroment";
+import {environment} from "../../../environment";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {Observable, Subscription} from "rxjs";
@@ -7,7 +7,7 @@ import {MatchingUser} from "../models/MatchingUser";
 
 @Injectable({ providedIn: 'root'})
 export class MatchingService implements OnDestroy{
-  private apiUrl: string = enviroment.apiUrl + "matching";
+  private apiUrl: string = environment.apiUrl + "matching";
   private headers: any;
   private token?: string;
   private authSubscription: Subscription;

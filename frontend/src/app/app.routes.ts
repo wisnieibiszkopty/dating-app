@@ -10,7 +10,7 @@ import {allDataProvidedGuard, notAllDataProvidedGuard} from "./shared/guards/aut
 import {AuthAppComponent} from "./components/auth-app/auth-app.component";
 import {UserDetailsComponent} from "./components/auth-app/user-details/user-details.component";
 import {MatchingComponent} from "./components/auth-app/matching/matching.component";
-import {NotificationComponent} from "./components/auth-app/notification/notification.component";
+import {NotificationListComponent} from "./components/auth-app/notification-list/notification-list.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'app', component: AuthAppComponent, children: [
       { path: 'matching', component: MatchingComponent, canActivate: [allDataProvidedGuard]},
       { path: 'chats', component: ChatsComponent, canActivate: [allDataProvidedGuard]},
-      { path: 'notifications', component: NotificationComponent, canActivate: [allDataProvidedGuard]},
+      { path: 'notifications', component: NotificationListComponent, canActivate: [allDataProvidedGuard]},
       { path: 'profile', component: ProfileComponent, canActivate: [allDataProvidedGuard]},
       { path: 'user-details', component: UserDetailsComponent, canActivate: [notAllDataProvidedGuard]}
     ]},

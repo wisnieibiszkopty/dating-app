@@ -1,4 +1,4 @@
-package com.wodowski.backend.matching;
+package com.wodowski.backend.invitation;
 
 import com.wodowski.backend.matching.dto.UserOverviewDTO;
 import lombok.Getter;

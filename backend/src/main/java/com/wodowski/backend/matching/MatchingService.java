@@ -1,5 +1,7 @@
 package com.wodowski.backend.matching;
 
+import com.wodowski.backend.invitation.Invitation;
+import com.wodowski.backend.invitation.InvitationRepository;
 import com.wodowski.backend.matching.dto.MatchingUserDTO;
 import com.wodowski.backend.matching.dto.UserOverviewDTO;
 import com.wodowski.backend.user.User;

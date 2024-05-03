@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy, OnInit} from "@angular/core";
 import {AuthService} from "./auth.service";
 import {HttpClient} from "@angular/common/http";
-import {enviroment} from "../../../enviroment";
+import {environment} from "../../../environment";
 import {Observable, Subscription} from "rxjs";
 import {User} from "../models/User";
 import {BasicInfo} from "../models/BasicInfo";
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 
 @Injectable({ providedIn: 'root'})
 export class UserService implements OnInit, OnDestroy{
-  private apiUrl: string = enviroment.apiUrl + "user";
+  private apiUrl: string = environment.apiUrl + "user";
   private headers: any;
   private token?: string;
   private user: User = new User("", "", "", [""], false);

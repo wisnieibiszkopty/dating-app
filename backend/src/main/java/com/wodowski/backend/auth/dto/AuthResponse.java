@@ -1,12 +1,11 @@
 package com.wodowski.backend.auth.dto;
 
-import com.wodowski.backend.matching.Invitation;
+import com.wodowski.backend.invitation.Invitation;
 import com.wodowski.backend.user.dto.FullUserDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public record AuthResponse(
         String token,
         FullUserDTO user,
-        List<Invitation> invitations
+        Page<Invitation> invitations
 ) {}
