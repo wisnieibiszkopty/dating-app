@@ -2,6 +2,8 @@ package com.wodowski.backend.auth;
 
 import com.wodowski.backend.auth.dto.RegisterResponse;
 import com.wodowski.backend.exceptions.UserExistsException;
+import com.wodowski.backend.matching.Invitation;
+import com.wodowski.backend.matching.InvitationRepository;
 import com.wodowski.backend.user.User;
 import com.wodowski.backend.auth.dto.AuthRequest;
 import com.wodowski.backend.auth.dto.RegisterRequest;
@@ -9,6 +11,7 @@ import com.wodowski.backend.auth.dto.AuthResponse;
 import com.wodowski.backend.user.UserRepository;
 import com.wodowski.backend.user.dto.BasicUserDTO;
 import com.wodowski.backend.user.dto.FullUserDTO;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -18,24 +21,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AuthService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final InvitationRepository invitationRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
 
-    public AuthService(UserRepository repository,
-                       PasswordEncoder passwordEncoder,
-                       JwtService jwtService,
-                       AuthenticationManager authManager) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authManager = authManager;
-    }
+
 
     public RegisterResponse register(RegisterRequest request) throws UserExistsException {
-        if(repository.existsByUsernameOrEmail(request.username(), request.email())){
+        if(userRepository.existsByUsernameOrEmail(request.username(), request.email())){
             throw new UserExistsException("User with this email or username already exists!");
         }
 
@@ -47,7 +44,7 @@ public class AuthService {
                 List.of("User")
         );
 
-        repository.save(user);
+        userRepository.save(user);
 
         BasicUserDTO basicUser = new BasicUserDTO(
                 user.getId(),
@@ -70,7 +67,7 @@ public class AuthService {
             )
         );
 
-        User user = repository.findByEmail(request.email()).orElseThrow();
+        User user = userRepository.findByEmail(request.email()).orElseThrow();
 
         FullUserDTO responseUser = new FullUserDTO(
                 user.getId(), user.getName(), user.getEmail(),
@@ -79,7 +76,9 @@ public class AuthService {
                 user.getLocation(), user.getPhotosUrls(), user.getPreference()
         );
 
+        List<Invitation> invitations = invitationRepository.getAllByReceiverId(user.getId());
+
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken, responseUser);
+        return new AuthResponse(jwtToken, responseUser, invitations);
     }
 }

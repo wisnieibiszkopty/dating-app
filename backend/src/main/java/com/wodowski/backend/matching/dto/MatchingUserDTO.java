@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class MatchingUser {
+public class MatchingUserDTO {
 
     private String id;
     private String name;

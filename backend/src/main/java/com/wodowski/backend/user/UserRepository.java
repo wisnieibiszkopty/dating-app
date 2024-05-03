@@ -1,6 +1,6 @@
 package com.wodowski.backend.user;
 
-import com.wodowski.backend.matching.dto.MatchingUser;
+import com.wodowski.backend.matching.dto.MatchingUserDTO;
 import com.wodowski.backend.user.dto.FullUserDTO;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -19,7 +19,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> getBasicInfo(String id);
 
     @Query(value="{}", fields = "{password:  0, username:  0, roles:  0, allDataProvided:  0}")
-    List<MatchingUser> getUsersForMatching();
+    List<MatchingUserDTO> getUsersForMatching();
 
     @Query(value="{'_id': ?0}", fields = "{'password':  0}")
     Optional<User> getFullInfo(String id);

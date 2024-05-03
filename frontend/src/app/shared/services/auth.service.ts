@@ -47,7 +47,7 @@ export class AuthService{
     }).subscribe({
       next: (res: any) => {
         this.initAuth(res.token);
-        console.log(res.user);
+        console.log(res);
         let user = new User(
           res.user.id, res.user.username, res.user.email, res.user.roles, res.user.allDataProvided,
           res.user.age, res.user.sex, res.user.orientation, res.user.description,

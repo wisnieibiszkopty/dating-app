@@ -21,6 +21,22 @@ export class MatchingService implements OnDestroy{
     return this.http.get(this.apiUrl, {headers: this.headers});
   }
 
+  acceptMatch(matchId: string){
+    const url = this.apiUrl + "/accept/" + matchId;
+    this.http.post(url, {}, {headers: this.headers}).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
+  }
+
+  rejectMatch(userId: string, matchId:string){
+
+  }
+
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }

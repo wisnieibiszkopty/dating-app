@@ -23,6 +23,10 @@ export class MenuComponent {
       routerLink: ["/app/chats"]
     },
     {
+      label: "Notifications",
+      routerLink: ["/app/notifications"]
+    },
+    {
       label: "Profile",
       routerLink: ["/app/profile"]
     },
