@@ -7,6 +7,7 @@ import {environment} from "../../../environment";
 import {BehaviorSubject, Observable} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";
+import {WebMessagingService} from "./web-messaging.service";
 
 
 @Injectable({
@@ -22,7 +23,8 @@ export class AuthService{
 
   constructor(
     private http: HttpClient,
-    private router: Router) {
+    private router: Router,
+    private webMessageService: WebMessagingService) {
       const tokenFromStorage = localStorage.getItem("token");
       if(tokenFromStorage !== null){
         this.token.next(tokenFromStorage);
@@ -33,10 +35,10 @@ export class AuthService{
         this.user.next(JSON.parse(userFromStorage));
       }
 
-    const notificationCountFromStorage = localStorage.getItem("notificationCount");
-    if(notificationCountFromStorage !== null){
-      this.notificationsCount.next(JSON.parse(notificationCountFromStorage));
-    }
+      const notificationCountFromStorage = localStorage.getItem("notificationCount");
+      if(notificationCountFromStorage !== null){
+        this.notificationsCount.next(JSON.parse(notificationCountFromStorage));
+      }
   }
 
   isAuthenticated(): boolean {
@@ -57,6 +59,7 @@ export class AuthService{
         console.log(res.user);
         this.setUser(res.user);
         this.setNotificationCount(res.notificationCount);
+        //this.webMessageService.connect(res.user.id);
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {

@@ -28,4 +28,15 @@ public class Notification {
         this.receiverId = receiverId;
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id='" + id + '\'' +
+                ", sender=" + sender +
+                ", receiverId='" + receiverId + '\'' +
+                ", type=" + type +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -33,7 +33,7 @@ public class WebSecurityConfig {
 
     CorsConfigurationSource apiConfigurationSource(){
         CorsConfiguration conf = new CorsConfiguration();
-        conf.setAllowedOrigins(List.of("http://localhost:4200"));
+        conf.setAllowedOrigins(List.of("http://localhost:4200", "*"));
         conf.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         conf.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -51,7 +51,8 @@ public class WebSecurityConfig {
                 auth -> auth.requestMatchers("/api/auth/**")
                     .permitAll()
                     .anyRequest()
-                    .authenticated()
+//                    .authenticated()
+                    .permitAll()
                 )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)

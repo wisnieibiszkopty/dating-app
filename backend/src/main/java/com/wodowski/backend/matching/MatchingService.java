@@ -7,6 +7,7 @@ import com.wodowski.backend.matching.dto.UserOverviewDTO;
 import com.wodowski.backend.notification.NotificationType;
 import com.wodowski.backend.user.User;
 import com.wodowski.backend.user.UserRepository;
+import com.wodowski.backend.webMessaging.WebMessagingController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class MatchingService {
 
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
+    private final WebMessagingController webMessaging;
 
     public List<MatchingUserDTO> getMatchingUsers(){
         return userRepository.getUsersForMatching();
@@ -42,6 +44,7 @@ public class MatchingService {
         Notification notification = new Notification(userOverview, matchId, NotificationType.INVITATION);
 
         // broadcast invitation to user if active
+        //webMessaging.sendNotification(matchId, notification);
 
         notificationRepository.save(notification);
 
