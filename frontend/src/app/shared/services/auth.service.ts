@@ -18,6 +18,7 @@ export class AuthService{
   private user: BehaviorSubject<User> = new BehaviorSubject<User>(new User("", "", "", [""], false));
   private headers: any;
   private authenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private notificationsCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(
     private http: HttpClient,
@@ -31,6 +32,11 @@ export class AuthService{
       if(userFromStorage !== null){
         this.user.next(JSON.parse(userFromStorage));
       }
+
+    const notificationCountFromStorage = localStorage.getItem("notificationCount");
+    if(notificationCountFromStorage !== null){
+      this.notificationsCount.next(JSON.parse(notificationCountFromStorage));
+    }
   }
 
   isAuthenticated(): boolean {
@@ -50,6 +56,7 @@ export class AuthService{
         console.log(res);
         console.log(res.user);
         this.setUser(res.user);
+        this.setNotificationCount(res.notificationCount);
         this.router.navigate(['/app/profile']);
       },
       error: (err) => {
@@ -102,8 +109,22 @@ export class AuthService{
     return this.user.asObservable();
   }
 
-  getToken(): Observable<string>{
+  getToken(): string {
+    return this.token.value;
+  }
+
+  getTokenAsObservable(): Observable<string>{
     return this.token.asObservable();
+  }
+
+  setNotificationCount(count: number): void{
+    this.notificationsCount.next(count);
+    localStorage.setItem("notificationCount", JSON.stringify(count));
+  }
+
+  getNotificationCount(): Observable<number>{
+    console.log("notifications: " + this.notificationsCount.value);
+    return this.notificationsCount.asObservable();
   }
 
   logout(){

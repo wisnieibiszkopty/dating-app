@@ -5,9 +5,13 @@ import jakarta.annotation.Resource;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+// maybe add separate class for mongo config
+
 @SpringBootApplication
+@EnableMongoAuditing
 @EnableMongoRepositories
 public class BackendApplication implements CommandLineRunner {
 

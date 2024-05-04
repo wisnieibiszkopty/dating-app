@@ -1,15 +1,17 @@
 package com.wodowski.backend.matching;
 
-import com.wodowski.backend.invitation.Invitation;
-import com.wodowski.backend.invitation.InvitationRepository;
+import com.wodowski.backend.notification.Notification;
+import com.wodowski.backend.notification.NotificationRepository;
 import com.wodowski.backend.matching.dto.MatchingUserDTO;
 import com.wodowski.backend.matching.dto.UserOverviewDTO;
+import com.wodowski.backend.notification.NotificationType;
 import com.wodowski.backend.user.User;
 import com.wodowski.backend.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +19,7 @@ import java.util.List;
 public class MatchingService {
 
     private final UserRepository userRepository;
-    private final InvitationRepository invitationRepository;
+    private final NotificationRepository notificationRepository;
 
     public List<MatchingUserDTO> getMatchingUsers(){
         return userRepository.getUsersForMatching();
@@ -37,11 +39,11 @@ public class MatchingService {
           currentUser.getPhotosUrls().get(0)
         );
 
-        Invitation invitation = new Invitation(userOverview, matchId, "You have new invitation!");
+        Notification notification = new Notification(userOverview, matchId, NotificationType.INVITATION);
 
         // broadcast invitation to user if active
 
-        invitationRepository.save(invitation);
+        notificationRepository.save(notification);
 
         // return something
     }

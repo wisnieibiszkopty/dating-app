@@ -1,1 +1,13 @@
-<p>notification works!</p>
+<!-- add profile picture and layout -->
+<p>{{notification?.sender?.username}}</p>
+<p>{{notification?.date}}</p>
+@switch (notification?.type){
+  @case("INVITATION"){
+    <p>{{notification?.sender?.username}} invited you!</p>
+    <p-button label="Accept" (click)="acceptInvitation()"></p-button>
+    <p-button label="Reject" (click)="rejectInvitation()"></p-button>
+  }
+  @case("INVITATION_CONFIRM"){
+    <p>{{notification?.sender?.username}} has accepted your invitation!</p>
+  }
+}

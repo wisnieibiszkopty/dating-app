@@ -13,7 +13,7 @@ export class MatchingService implements OnDestroy{
   private authSubscription: Subscription;
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    this.authSubscription = this.authService.getToken().subscribe((token: string) => { this.token = token; });
+    this.authSubscription = this.authService.getTokenAsObservable().subscribe((token: string) => { this.token = token; });
     this.headers = {'Authorization': 'Bearer ' + this.token };
   }
 

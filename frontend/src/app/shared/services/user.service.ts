@@ -22,7 +22,7 @@ export class UserService implements OnInit, OnDestroy{
     private http: HttpClient,
     private router: Router
   ) {
-    this.authSubscription = this.authService.getToken().subscribe((token: string) => { this.token = token; });
+    this.authSubscription = this.authService.getTokenAsObservable().subscribe((token: string) => { this.token = token; });
     this.userSubscription = this.authService.getUserAsObservable().subscribe((user: User) => {this.user = user; });
     this.headers = {'Authorization': 'Bearer ' + this.token };
   }

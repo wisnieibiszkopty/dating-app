@@ -1,17 +1,24 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuModule} from "primeng/menu";
+import {BadgeModule} from "primeng/badge";
+import {AuthService} from "../../shared/services/auth.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [
-    MenuModule
+    MenuModule,
+    BadgeModule
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
-export class MenuComponent {
+export class MenuComponent implements OnDestroy{
+
+  notificationCount: number = 0;
+  private notificationCountSubscription: Subscription;
 
   items: MenuItem[] = [
     {
@@ -38,4 +45,15 @@ export class MenuComponent {
     }
   ];
 
+  constructor(private authService: AuthService){
+    this.notificationCountSubscription = this.authService
+      .getNotificationCount()
+      .subscribe((count) => {
+        this.notificationCount = count;
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.notificationCountSubscription.unsubscribe();
+  }
 }

@@ -2,8 +2,7 @@ package com.wodowski.backend.auth;
 
 import com.wodowski.backend.auth.dto.RegisterResponse;
 import com.wodowski.backend.exceptions.UserExistsException;
-import com.wodowski.backend.invitation.Invitation;
-import com.wodowski.backend.invitation.InvitationRepository;
+import com.wodowski.backend.notification.NotificationRepository;
 import com.wodowski.backend.user.User;
 import com.wodowski.backend.auth.dto.AuthRequest;
 import com.wodowski.backend.auth.dto.RegisterRequest;
@@ -12,9 +11,6 @@ import com.wodowski.backend.user.UserRepository;
 import com.wodowski.backend.user.dto.BasicUserDTO;
 import com.wodowski.backend.user.dto.FullUserDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final InvitationRepository invitationRepository;
+    private final NotificationRepository notificationRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
@@ -78,10 +74,9 @@ public class AuthService {
                 user.getLocation(), user.getPhotosUrls(), user.getPreference()
         );
 
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<Invitation> invitations = invitationRepository.getAllByReceiverId(user.getId(), pageRequest);
+        long notificationCounts = notificationRepository.countByReceiverId(user.getId());
 
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken, responseUser, invitations);
+        return new AuthResponse(jwtToken, responseUser, notificationCounts);
     }
 }
