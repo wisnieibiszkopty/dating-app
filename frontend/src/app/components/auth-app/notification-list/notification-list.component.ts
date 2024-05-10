@@ -33,7 +33,7 @@ export class NotificationListComponent implements OnInit{
     this.notificationService.acceptInvitation(id);
   }
 
-  onRejected(){
+  onRejected(id: String){
 
   }
 

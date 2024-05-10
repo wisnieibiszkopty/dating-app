@@ -46,14 +46,14 @@ export class NotificationService{
     const headers = {'Authorization': 'Bearer ' + this.authService.getToken()};
 
     // works good, returns error
-    // this.http.post(url, {}, {headers: headers}).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //   },
-    //   error: err => {
-    //     console.error(err);
-    //   }
-    // });
+    this.http.post(url, {}, {headers: headers}).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
 
     //this.webMessagingService.sendNotification(notificationId, "nigga");
   }

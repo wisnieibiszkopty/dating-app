@@ -8,6 +8,8 @@
     <p-button label="Reject" (click)="rejectInvitation()"></p-button>
   }
   @case("INVITATION_CONFIRM"){
-    <p>{{notification?.sender?.username}} has accepted your invitation!</p>
+    <!--  make link to chat  -->
+    <a><p>{{notification?.sender?.username}} has accepted your invitation!</p></a>
+    <p-button size="small" label="Delete"></p-button>
   }
 }

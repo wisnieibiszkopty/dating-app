@@ -1,5 +1,6 @@
 package com.wodowski.backend.notification;
 
+import com.wodowski.backend.exceptions.ChatAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ public class NotificationController {
     }
 
     @PostMapping("/accept/{id}")
-    public ResponseEntity<?> acceptNotification(@PathVariable String id){
+    public ResponseEntity<?> acceptNotification(@PathVariable String id) throws ChatAlreadyExistsException {
         notificationService.acceptNotification(id);
-        return ResponseEntity.ok("jazda");
+        return ResponseEntity.ok("Invitation confirmed");
     }
 
     @PostMapping("/reject/{id}")

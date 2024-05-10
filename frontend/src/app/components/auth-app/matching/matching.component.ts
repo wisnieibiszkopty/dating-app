@@ -37,15 +37,26 @@ export class MatchingComponent implements OnInit{
 
   onAccept(){
     // send request with invitation
-    this.matchingService.acceptMatch(this.match?.id!);
+    this.matchingService.acceptMatch(this.match?.id!).subscribe({
+      next: (res) => {
+        this.messagingService.add({
+          severity: "success",
+          summary: "Invitation send",
+          detail: "bottom text"
+        });
 
-    this.messagingService.add({
-      severity: "success",
-      summary: "Invitation send",
-      detail: "bottom text"
+        this.handleQueue();
+      },
+      error: err => {
+        console.error(err);
+        // for now it always gives error :<
+        this.messagingService.add({
+          severity: "danger",
+          summary: "Cannot send invitation!",
+          detail: "bottom text"
+        });
+      }
     });
-
-    this.handleQueue();
   }
 
   onReject(){

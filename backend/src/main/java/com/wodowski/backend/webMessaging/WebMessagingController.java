@@ -25,9 +25,8 @@ public class WebMessagingController {
         return "Hello, " + HtmlUtils.htmlEscape(message) + "!";
     }
 
-    // send invitation
+    // send notification
     @MessageMapping("/notification/{id}")
-    @SendToUser("/queue/notification/{id}")
     public void sendNotification(@DestinationVariable String id, @Payload Notification notification){
         System.out.println("Sending notification");
         System.out.println(id);
@@ -35,5 +34,5 @@ public class WebMessagingController {
         messagingTemplate.convertAndSend("/queue/notification/" + id, notification);
     }
 
-    // broadcast message
+    // send chat message
 }

@@ -26,14 +26,7 @@ export class MatchingService implements OnDestroy{
 
   acceptMatch(matchId: string){
     const url = this.apiUrl + "/accept/" + matchId;
-    this.http.post(url, {}, {headers: this.headers}).subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: err => {
-        console.error(err);
-      }
-    });
+    return this.http.post(url, {}, {headers: this.headers});
 
 
     // this.webMessagingService.publish({

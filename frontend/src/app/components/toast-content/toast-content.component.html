@@ -7,5 +7,8 @@
     @case ("INVITATION"){
       <p>{{notification?.sender?.username}} Invited you!</p>
     }
+    @case ("INVITATION_CONFIRM"){
+      <p>{{notification?.sender?.username}} Accepted your invitation!</p>
+    }
   }
 </div>
