@@ -7,7 +7,7 @@ import {environment} from "../../../environment";
 import {BehaviorSubject, Observable} from "rxjs";
 import {RegisterForm} from "../models/RegisterForm";
 import {User} from "../models/User";
-import {WebMessagingService} from "./web-messaging.service";
+import {UserOverview} from "../models/UserOverview";
 
 
 @Injectable({
@@ -23,8 +23,7 @@ export class AuthService{
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private webMessageService: WebMessagingService) {
+    private router: Router) {
       const tokenFromStorage = localStorage.getItem("token");
       if(tokenFromStorage !== null){
         this.token.next(tokenFromStorage);
@@ -107,6 +106,12 @@ export class AuthService{
     return this.user.value;
   }
 
+  getUserOverview(): UserOverview{
+    const user = this.user.value;
+    const image = user.images && user.images.length > 0 ? user.images[0] : undefined;
+    return new UserOverview(user.id, user.username, image);
+  }
+
   getUserAsObservable(): Observable<User> {
     // if website will be refreshed by browser user will be gone :<
     return this.user.asObservable();
@@ -121,8 +126,15 @@ export class AuthService{
   }
 
   setNotificationCount(count: number): void{
+    console.log(count);
     this.notificationsCount.next(count);
     localStorage.setItem("notificationCount", JSON.stringify(count));
+  }
+
+  incrementNotificationCount(): void {
+    const currentValue = this.notificationsCount.value;
+    this.notificationsCount.next(currentValue + 1);
+    localStorage.setItem("notificationCount", JSON.stringify(currentValue));
   }
 
   getNotificationCount(): Observable<number>{

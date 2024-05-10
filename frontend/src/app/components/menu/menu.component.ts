@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import {MenuItem, MenuItemCommandEvent, MessageService} from "primeng/api";
 import {MenuModule} from "primeng/menu";
 import {BadgeModule} from "primeng/badge";
 import {AuthService} from "../../shared/services/auth.service";
@@ -7,6 +7,9 @@ import {Subscription} from "rxjs";
 import {WebMessagingService} from "../../shared/services/web-messaging.service";
 import {ButtonModule} from "primeng/button";
 import {Message} from "@stomp/stompjs";
+import {Notification} from "../../shared/models/Notification";
+import {ToastModule} from "primeng/toast";
+import {ToastContentComponent} from "../toast-content/toast-content.component";
 
 @Component({
   selector: 'app-menu',
@@ -14,16 +17,19 @@ import {Message} from "@stomp/stompjs";
   imports: [
     MenuModule,
     BadgeModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule,
+    ToastContentComponent
   ],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  styleUrl: './menu.component.css',
+  providers: [MessageService]
 })
 export class MenuComponent implements OnInit, OnDestroy{
 
+  actualNotification: Notification | undefined;
   notificationCount: number = 0;
   private notificationCountSubscription: Subscription;
-  //private notificationSubscription: Subscription;
   private topicSubscription: Subscription;
 
   items: MenuItem[] = [
@@ -51,7 +57,10 @@ export class MenuComponent implements OnInit, OnDestroy{
     }
   ];
 
-  constructor(private authService: AuthService, private webMessagingService: WebMessagingService){
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private webMessagingService: WebMessagingService){
     // Getting notification status from server
     this.notificationCountSubscription = this.authService
       .getNotificationCount()
@@ -66,28 +75,25 @@ export class MenuComponent implements OnInit, OnDestroy{
     //     this.notificationCount++;
     // });
 
-    this.topicSubscription = this.webMessagingService.watch("/topic/hello")
+    this.topicSubscription = this.webMessagingService.watch("/queue/notification/" + this.authService.getUser().id)
       .subscribe((message: Message) => {
-        console.log(message.body);
+        this.actualNotification = JSON.parse(message.body);
+        this.authService.incrementNotificationCount();
+
+        // making toast with notification info and link to notification component
+        this.messageService.add({
+          key: 'notification',
+          severity: 'success',
+          summary: 'new notification'
+        });
     });
   }
 
   ngOnInit(): void {
 
   }
-
-  hello(){
-    const message = "jazda" + new Date();
-    console.log("message to send " + message);
-    this.webMessagingService.publish({
-      destination: "/topic/hello",
-      body: message
-    })
-  }
-
   ngOnDestroy(): void {
     this.notificationCountSubscription.unsubscribe();
-    //this.notificationSubscription.unsubscribe();
     this.topicSubscription.unsubscribe();
   }
 }

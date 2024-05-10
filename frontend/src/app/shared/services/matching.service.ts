@@ -26,20 +26,25 @@ export class MatchingService implements OnDestroy{
 
   acceptMatch(matchId: string){
     const url = this.apiUrl + "/accept/" + matchId;
-    // this.http.post(url, {}, {headers: this.headers}).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //   },
-    //   error: err => {
-    //     console.error(err);
-    //   }
-    // });
+    this.http.post(url, {}, {headers: this.headers}).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
 
-    //this.webMessagingService.sendNotification(matchId, "nigga");
+
+    // this.webMessagingService.publish({
+    //   destination: "/app/notification/" + matchId,
+    //   body: JSON.stringify()
+    // })
+
   }
 
   rejectMatch(userId: string, matchId:string){
-
+    // rejected match cannot be sent to user again
   }
 
   ngOnDestroy(): void {

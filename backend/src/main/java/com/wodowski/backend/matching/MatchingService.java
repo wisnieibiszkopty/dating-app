@@ -36,15 +36,16 @@ public class MatchingService {
         // check if this match don't already exists
 
         UserOverviewDTO userOverview = new UserOverviewDTO(
-          currentUser.getId(),
-          currentUser.getName(),
-          currentUser.getPhotosUrls().get(0)
+            currentUser.getId(),
+            currentUser.getName(),
+            // ?????
+            currentUser.getPhotosUrls() != null && !currentUser.getPhotosUrls().isEmpty() ? currentUser.getPhotosUrls().get(0) : null
         );
 
         Notification notification = new Notification(userOverview, matchId, NotificationType.INVITATION);
 
         // broadcast invitation to user if active
-        //webMessaging.sendNotification(matchId, notification);
+        webMessaging.sendNotification(matchId, notification);
 
         notificationRepository.save(notification);
 

@@ -1,5 +1,10 @@
+<p-toast position="top-right" key="notification" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <app-toast-content [notification]="actualNotification" style="flex: 1;"></app-toast-content>
+  </ng-template>
+</p-toast>
+
 <!-- replace p-menu with my own, for better customization -->
 <p-menu [model]="items"></p-menu>
 <br><br>
 <a pBadge value="{{notificationCount}}">Notifications {{notificationCount}}</a>
-<p-button label="Websocket" (click)="hello()"></p-button>

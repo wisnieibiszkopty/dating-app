@@ -1,0 +1,11 @@
+<div routerLink="/app/notifications">
+  <div style="display: flex;">
+    <img src="{{notification?.sender?.profilePicture?.filepath}}" alt="{{notification?.sender?.username}}">
+    <p>{{notification?.sender?.username}}</p>
+  </div>
+  @switch (notification?.type){
+    @case ("INVITATION"){
+      <p>{{notification?.sender?.username}} Invited you!</p>
+    }
+  }
+</div>

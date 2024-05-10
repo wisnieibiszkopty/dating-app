@@ -1,0 +1,4 @@
+<h1>Notifications</h1>
+@for(notification of notifications; track notification){
+  <app-notification [notification]="notification" (accepted)="onAccepted($event)"></app-notification>
+}
